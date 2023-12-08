@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block head %}
+<script type="text/javascript">
+function updateStatus(status) {
+    console.log(status)
+    if (status === 'playing') {
+
+    } else if (status === 'paused') {
+
+    } else if (status === '') {
+
+    }
+}
+function updateButton(status) {
+    var pauseButton = document.getElementById('pauseButton');
+    if (status === 'playing') {
+	pauseButton.innerText = 'Pause';
+    } else if (status === 'paused' || status === 'stopped') {
+	pauseButton.innerText = 'Resume';
+    }
+}
+function controlMovie(action) {
+    fetch('/' + action)
+    .then(response => response.json())
+    .then(data => {
+	updateButton(data.status);
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+{% endblock %}
+
+{% block content %}
+    <button onclick="controlMovie('play')">Play</button>
+    <div style="display: flex;">
+	<button onclick="controlMovie('jump-backward')">- 5 min</button>
+	<button onclick="controlMovie('jump-forward')">+ 5 min</button>
+    </div>
+    <button id="pauseButton" onclick="controlMovie('pause')">Pause</button>
+    <button onclick="controlMovie('stop')">Stop</button>
+    <br>
+    <button ><a href="/settings">Settings</button>
+{% endblock %}

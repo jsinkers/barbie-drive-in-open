@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{% endblock %}
+{% block content %}
+<h2>Light Control</h2>
+<div class="input-group">
+<form action="/settings" method="post">
+<label for="red">Red</label>
+<input class="form-range" type="range" id="red" name="red" min="0" max="100" value="{{ red }}"><br>
+
+<label for="green">Green</label>
+<input class="form-range" type="range" id="green" name="green" min="0" max="100" value="{{ green }}"><br>
+
+<label for="blue">Blue</label>
+<input class="form-range" type="range" id="blue" name="blue" min="0" max="100" value="{{ blue }}"><br>
+
+<div class="button-container">
+<button type="submit" name="action" value="light-color">Set colour</button>
+<button type="submit" name="action" value="light-default">Set as default</button>
+</div>
+</div>
+</form>
+<h2>Device Control</h2>
+<div class="button-container">
+    <form id="restartForm">
+	<button type="submit" value="Restart Device">Restart Device</button></a>
+    </form>
+    <form id="shutdownForm">
+        
+	<button type="submit" value="Shutdown Device">Shutdown Device</button></a>
+    </form>
+</div>
+
+<script>
+	document.getElementById('restartForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const confirmed = confirm('Are you sure you want to restart the device?');
+            if (confirmed) {
+                fetch('/restart', {
+                    method: 'POST'
+                }).then(response => {
+                    console.log('Restarting device...');
+                    // Handle response if needed
+                }).catch(error => {
+                    console.error('Error restarting device:', error);
+                });
+            }
+        });
+
+        document.getElementById('shutdownForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const confirmed = confirm('Are you sure you want to shutdown the device?');
+            if (confirmed) {
+                fetch('/shutdown', {
+                    method: 'POST'
+                }).then(response => {
+                    console.log('Shutting down device...');
+                    // Handle response if needed
+                }).catch(error => {
+                    console.error('Error shutting down device:', error);
+                });
+            }
+        });        
+</script>
+{% endblock %}

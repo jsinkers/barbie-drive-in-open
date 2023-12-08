@@ -1,0 +1,15 @@
+[Unit]
+Description=Barbie drive-in web app
+After=network.target 
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/barbie-drive-in
+ExecStart=sudo /usr/bin/python3 -u /home/pi/barbie-drive-in/app.py
+User=pi
+StandardOutput=journal+console
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
